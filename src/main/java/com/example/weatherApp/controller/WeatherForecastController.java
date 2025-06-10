@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -55,13 +56,11 @@ public class WeatherForecastController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Weather data not available");
             }
         } catch (HttpClientErrorException e) {
-            log.error("Client error while fetching weather data: {}", e.getMessage());
-            return ResponseEntity.status(e.getStatusCode())
-                    .body("Error fetching weather data: " + e.getStatusText());
+            return ResponseEntity.status(e.getStatusCode()).body("Client error: " + e.getStatusText());
+        } catch (HttpServerErrorException e) {
+            return ResponseEntity.status(e.getStatusCode()).body("Server error: " + e.getStatusText());
         } catch (Exception e) {
-            log.error("Unexpected error: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
         }
     }
 }
