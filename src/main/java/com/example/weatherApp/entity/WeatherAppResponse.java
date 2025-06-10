@@ -1,6 +1,7 @@
 package com.example.weatherApp.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 @Data
@@ -10,23 +11,21 @@ public class WeatherAppResponse {
     @JsonProperty("name")
     private String city;
 
+    @JsonProperty("temperature")
     private Double temperature;
+    @JsonProperty("pressure")
     private Double pressure;
+    @JsonProperty("humidity")
     private Double humidity;
 
-    @JsonIgnore
-    private MainEntity main;
-
-    private WindEntity wind;
-
     @JsonProperty("main")
-    public void unpackMain(MainEntity main) {
-        this.main = main;
-        if (main != null) {
-            this.temperature = main.getTemp();
-            this.pressure = main.getPressure();
-            this.humidity = main.getHumidity();
-        }
+    private void setMain(JsonNode main) {
+        this.temperature = main.get("temp").asDouble();
+        this.pressure = main.get("pressure").asDouble();
+        this.humidity = main.get("humidity").asDouble();
     }
+
+    @JsonProperty("wind")
+    private WindEntity wind;
 
 }
