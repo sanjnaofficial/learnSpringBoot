@@ -2,6 +2,7 @@ package com.example.weatherApp.controller;
 
 import com.example.weatherApp.entity.WeatherAppResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +25,19 @@ public class WeatherAppController {
         this.restTemplate = restTemplate;
     }
 
-    @GetMapping("/weather")
-    public ResponseEntity<WeatherAppResponse> getWeather(@RequestParam String city) {
+    @Cacheable(value = "weatherCache",key = "#city")
+    public WeatherAppResponse getWeather(String city) {
         String url= String.format("%s?q=%s&appid=%s&units=metric",openWeatherApiUrl,city, openWeatherApiKey);
         try{
-            WeatherAppResponse response = restTemplate.getForObject(url, WeatherAppResponse.class);
-            return ResponseEntity.ok().body(response);
+            return restTemplate.getForObject(url, WeatherAppResponse.class);
         } catch (RestClientException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<WeatherAppResponse> getWeatherResponse(@RequestParam String city) {
+        WeatherAppResponse response = getWeather(city);
+        return ResponseEntity.ok().body(response);
     }
 }
