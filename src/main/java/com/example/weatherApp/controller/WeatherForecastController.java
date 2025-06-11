@@ -5,15 +5,13 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.cache.annotation.Cacheable;
 
 @RestController
 @RequestMapping("/api")
@@ -21,8 +19,7 @@ import org.springframework.cache.annotation.Cacheable;
 @Validated
 public class WeatherForecastController {
 
-    private final RestTemplate restTemplate;
-
+    private final RestClient restClient;
     @Value("${weather.api.url}")
     private String apiUrl;
 
@@ -30,10 +27,9 @@ public class WeatherForecastController {
     private String apiKey;
 
     @Autowired
-    public WeatherForecastController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public WeatherForecastController(RestClient.Builder restClientBuilder) {
+        this.restClient = restClientBuilder.build();
     }
-
     @GetMapping("/getWeatherForecast")
     @CrossOrigin(origins = "http://localhost:63342")
     @Cacheable(value = "weatherCache", key = "#city")
@@ -45,10 +41,16 @@ public class WeatherForecastController {
         log.info("Fetching weather data for city: {}", city);
 
         try {
-            WeatherAppResponse response = restTemplate.getForObject(url, WeatherAppResponse.class);
+            WeatherAppResponse response = restClient.get()
+                    .uri(url)
+                    .retrieve()
+                    .body(WeatherAppResponse.class);
 
-            String rawJson = restTemplate.getForObject(url, String.class);
-            log.info("Raw response: {}", rawJson);
+//            String rawJson =restClient.get()
+//                    .uri(url)
+//                    .retrieve()
+//                    .body(String.class);
+//            log.info("Raw response: {}", rawJson);
 
             if (response != null) {
                 log.info("Received weather data: {}", response);
