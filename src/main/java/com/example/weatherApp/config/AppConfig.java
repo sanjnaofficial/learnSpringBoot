@@ -1,18 +1,18 @@
 package com.example.weatherApp.config;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.Duration;
+
 @Configuration
 public class AppConfig {
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
-
     @Bean
     public WebMvcConfigurer corsConfigurer(){
         return new WebMvcConfigurer() {
@@ -23,5 +23,15 @@ public class AppConfig {
                         .allowedMethods("*");
             }
         };
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory){
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofDays(7))
+                .disableCachingNullValues();
+        return RedisCacheManager.builder(redisConnectionFactory)
+                .cacheDefaults(config)
+                .build();
     }
 }
