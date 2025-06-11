@@ -36,7 +36,7 @@ public class WeatherForecastController {
 
     @GetMapping("/getWeatherForecast")
     @CrossOrigin(origins = "http://localhost:63342")
-    @Cacheable(value = "weatherCache", key = "#city", unless = "#result == null || #result.statusCodeValue != 200")
+    @Cacheable(value = "weatherCache", key = "#city")
     public WeatherAppResponse getWeatherForecast(@RequestParam @NotBlank String city) {
         String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("q", city)
