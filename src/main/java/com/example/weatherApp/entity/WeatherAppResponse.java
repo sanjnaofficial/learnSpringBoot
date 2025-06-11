@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherAppResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @JsonProperty("name")
     private String city;
 
@@ -20,9 +22,11 @@ public class WeatherAppResponse implements Serializable {
 
     @JsonProperty("main")
     private void setMain(JsonNode main) {
-        this.temperature = main.get("temp").asDouble();
-        this.pressure = main.get("pressure").asDouble();
-        this.humidity = main.get("humidity").asDouble();
+        if (main != null) {
+            this.temperature = main.has("temp") ? main.get("temp").asDouble() : null;
+            this.pressure = main.has("pressure") ? main.get("pressure").asDouble() : null;
+            this.humidity = main.has("humidity") ? main.get("humidity").asDouble() : null;
+        }
     }
 
     @JsonProperty("wind")
