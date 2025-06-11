@@ -3,7 +3,6 @@ package com.example.weatherApp.controller;
 import com.example.weatherApp.entity.WeatherAppResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +24,6 @@ public class WeatherAppController {
         this.restTemplate = restTemplate;
     }
 
-    @Cacheable(value = "weatherCache",key = "#city")
     public WeatherAppResponse getWeather(String city) {
         String url= String.format("%s?q=%s&appid=%s&units=metric",openWeatherApiUrl,city, openWeatherApiKey);
         try{
@@ -35,9 +33,10 @@ public class WeatherAppController {
         }
     }
 
+    @Cacheable(value = "weatherCache",key = "#city")
     @GetMapping("/weather")
-    public ResponseEntity<WeatherAppResponse> getWeatherResponse(@RequestParam String city) {
+    public WeatherAppResponse getWeatherResponse(@RequestParam String city) {
         WeatherAppResponse response = getWeather(city);
-        return ResponseEntity.ok().body(response);
+        return response;
     }
 }

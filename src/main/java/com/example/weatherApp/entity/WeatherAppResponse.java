@@ -28,7 +28,7 @@ public class WeatherAppResponse implements Serializable {
     }
 
     @Data
-    private static class WeatherWind{
+    private static class WeatherWind implements Serializable {
         @JsonProperty("speed")
         private Double speed;
         @JsonProperty("deg")
