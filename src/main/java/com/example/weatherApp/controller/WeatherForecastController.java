@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -38,6 +35,7 @@ public class WeatherForecastController {
     }
 
     @GetMapping("/getWeatherForecast")
+    @CrossOrigin(origins = "http://localhost:63342")
     @Cacheable(value = "weatherCache", key = "#city", unless = "#result == null || #result.statusCodeValue != 200")
     public ResponseEntity<?> getWeatherForecast(@RequestParam @NotBlank String city) {
         String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
