@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { padding: 8px; margin: 5px; }
+    </style>
+</head>
+<body>
+<h1>Check Weather</h1>
+
+<input type="text" id="cityInput" placeholder="Enter city name" />
+<button onclick="getWeather()">Get Weather</button>
+
+<div id="weatherResult" style="margin-top: 20px;"></div>
+
+<script>
+    async function getWeather() {
+        const city = document.getElementById('cityInput').value;
+        const resultDiv = document.getElementById('weatherResult');
+
+        if (!city) {
+            resultDiv.innerHTML = "Please enter a city.";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/weather?city=${city}`);
+            if (!response.ok) {
+                throw new Error("City not found or server error");
+            }
+
+            const data = await response.json();
+            resultDiv.innerHTML = `
+          <h3>Weather in ${data.name}</h3>
+          <p>Temperature: ${data.temperature} °C</p>
+          <p>Humidity: ${data.humidity}%</p>
+          <p>Pressure: ${data.pressure} hPa</p>
+          <p>Wind Speed: ${data.wind.speed} m/s</p>
+          <p>Wind Direction: ${data.wind.deg}°</p>
+        `;
+        } catch (error) {
+            resultDiv.innerHTML = `<p style="color: red;">${error.message}</p>`;
+        }
+    }
+</script>
+</body>
+</html>
