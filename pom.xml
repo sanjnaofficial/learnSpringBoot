@@ -9,9 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>weatherApp</artifactId>
+	<artifactId>learnApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>weatherApp</name>
+	<packaging>pom</packaging>
+	<name>learnApp</name>
 	<description>Demo weather app project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -20,6 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
+	<modules>
+		<module>dvdRentalSystem</module>
+		<module>weatherApp</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
