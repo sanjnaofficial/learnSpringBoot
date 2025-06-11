@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.cache.annotation.Cacheable;
 
 @RestController
 @RequestMapping("/api")
@@ -37,14 +38,13 @@ public class WeatherForecastController {
     }
 
     @GetMapping("/getWeatherForecast")
-    public ResponseEntity<?> getWeatherForecast(@RequestParam @NotBlank String city,
-                                                                 @RequestParam(defaultValue = "metric") String units) {
+    @Cacheable(value = "weatherCache", key = "#city", unless = "#result == null || #result.statusCodeValue != 200")
+    public ResponseEntity<?> getWeatherForecast(@RequestParam @NotBlank String city) {
         String url = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("q", city)
                 .queryParam("appid", apiKey)
-                .queryParam("units", units)
                 .toUriString();
-        log.info("Fetching weather data for city: {} with units: {}", city, units);
+        log.info("Fetching weather data for city: {}", city);
 
         try {
             WeatherAppResponse response = restTemplate.getForObject(url, WeatherAppResponse.class);

@@ -3,11 +3,11 @@ package com.example.weatherApp.entity;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
+import java.io.Serializable;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WeatherAppResponse {
-
+public class WeatherAppResponse implements Serializable {
     @JsonProperty("name")
     private String city;
 
