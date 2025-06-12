@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherAppResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
     @JsonProperty("name")
     private String city;
 
@@ -29,6 +30,7 @@ public class WeatherAppResponse implements Serializable {
 
     @Data
     private static class WeatherWind implements Serializable {
+        private static final long serialVersionUID = 1L;
         @JsonProperty("speed")
         private Double speed;
         @JsonProperty("deg")

@@ -11,9 +11,8 @@
 	<groupId>com.example</groupId>
 	<artifactId>learnApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
 	<name>learnApp</name>
-	<description>Demo weather app project for Spring Boot</description>
+	<description>Demo weather app project and dvd rental system for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -21,10 +20,6 @@
 	<developers>
 		<developer/>
 	</developers>
-	<modules>
-		<module>dvdRentalSystem</module>
-		<module>weatherApp</module>
-	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -57,6 +52,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
