@@ -10,12 +10,6 @@
         </processorPath>
         <module name="parentApp.main" />
       </profile>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="parentApp" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
       <module name="dvdRentalApp" target="19" />

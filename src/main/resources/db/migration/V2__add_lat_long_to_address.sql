@@ -1,0 +1,3 @@
+ALTER TABLE address
+ADD COLUMN latitude DOUBLE,
+ADD COLUMN longitude DOUBLE;

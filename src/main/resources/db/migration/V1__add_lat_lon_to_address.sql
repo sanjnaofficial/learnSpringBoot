@@ -1,2 +1,0 @@
-ALTER TABLE address ADD COLUMN latitude DECIMAL(10, 8);
-ALTER TABLE address ADD COLUMN longitude DECIMAL(11, 8);
