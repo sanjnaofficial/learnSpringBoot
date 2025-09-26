@@ -32,11 +32,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/dvd/search/**").permitAll()
+                        .requestMatchers("/dvd/search/**").hasAnyRole("USER", "ADMIN") // both can access
+                        .requestMatchers("/dvd/actor/**").hasRole("ADMIN") // only admin
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 

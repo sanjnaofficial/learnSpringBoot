@@ -20,12 +20,16 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {
         try {
-            authManager.authenticate(
+            var authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-            return jwtUtil.generateToken(username);
+
+            // Fetch UserDetails from authentication object
+            var userDetails = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+            return jwtUtil.generateToken(userDetails);
         } catch (AuthenticationException e) {
             return "Invalid credentials";
         }
     }
+
 }

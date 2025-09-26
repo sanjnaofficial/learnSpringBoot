@@ -1,0 +1,20 @@
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS user
+(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(200) UNIQUE NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    firstName VARCHAR(200) NOT NULL,
+    lastName VARCHAR(200) NOT NULL,
+    roleId INT NOT NULL,
+    createdOn TIMESTAMP NOT NULL DEFAULT NOW(),
+    lastModified TIMESTAMP NOT NULL DEFAULT NOW(),
+    INDEX (username),
+    CONSTRAINT fkUserRoleId FOREIGN KEY(roleId) REFERENCES roles (id),
+)ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;

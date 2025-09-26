@@ -35,6 +35,4 @@ public class DvdController {
         return actorElasticRepo.searchByNameFuzzy(name);
     }
 
-
-
 }
